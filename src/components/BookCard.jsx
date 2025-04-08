@@ -1,8 +1,6 @@
 function BookCard({ book }) {
- const { title, author_name, cover_i } = book;
-  const imageUrl = cover_i 
-    ? `https://covers.openlibrary.org/b/id/${cover_i}-L.jpg` 
-    : "default-image-url.jpg"; // Fallback image if no cover image is available
+ const { title, author_name, imageUrl } = book;
+
  return (
   <div className="bg-white shadow-md rounded-lg p-4 m-4">
    <img src={imageUrl} alt={title} className="w-full h-48 object-cover rounded-t-lg"/>

@@ -1,28 +1,40 @@
-import { useEffect, useState } from "react";
+import {  useEffect, useState } from "react";
 import BookCard from "./BookCard";
+import { fetchPopularBooks } from "../utils/api";
 
 
 function PopularBooks() {
  const [books, setBooks] = useState([]);
  const [loading, setLoading] = useState(true);
  const [error, setError] = useState(null);
- // Fetching book data from Open Library API
 
  useEffect(() => {
-  fetch("https://openlibrary.org/search.json?q=the+lord+of+the+rings")
-    .then((response) => response.json())
-   .then((data) => {
-    console.log(data.docs)
-    setBooks(data.docs)
-    setLoading(false);
-    })
-   .catch((error) => {
-    console.error("Error fetching book data:", error)
-    setError(error);
-    setLoading(false);
-   });
- }, []);
+  const getBooks = async () => {
+  try {
+    const data = await fetchPopularBooks();
+    //fetch images for each book
+    //Promise.all is used when you have multiple promises to resolve
+    //and you want to wait for all of them to resolve before proceeding
+    const booksWithImages = await Promise.all(
+      data.map(async (book) => {
+        const coverId = book.cover_i;
+        const imageUrl = coverId
+          ? `https://covers.openlibrary.org/b/id/${coverId}-L.jpg`
+          : "https://via.placeholder.com/150";
+        return { ...book, imageUrl };
+      })
+    );
 
+    setBooks(booksWithImages);
+    setLoading(false);
+  } catch (error) {
+   setError(error);
+   setLoading(false);
+  }
+  }
+  getBooks()
+},[])
+ 
  if (loading) {
   return <div>Loading...</div>;
  }
@@ -30,9 +42,8 @@ function PopularBooks() {
   return <div>Error fetching books: {error.message}</div>;
  }
 
- // Filtering books to get popular ones
-
  
+
 
  return (
    <section className="bg-gray-100 py-10 flex flex-col items-center">
