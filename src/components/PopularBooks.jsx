@@ -11,10 +11,12 @@ function PopularBooks() {
  useEffect(() => {
   const getBooks = async () => {
   try {
-    const data = await fetchPopularBooks();
+   const data = await fetchPopularBooks();
+   
     //fetch images for each book
     //Promise.all is used when you have multiple promises to resolve
-    //and you want to wait for all of them to resolve before proceeding
+   //and you want to wait for all of them to resolve before proceeding
+   
     const booksWithImages = await Promise.all(
       data.map(async (book) => {
         const coverId = book.cover_i;
