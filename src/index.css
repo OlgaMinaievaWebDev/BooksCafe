@@ -1,1 +1,22 @@
 @import "tailwindcss";
+
+@theme{
+ --color-surface-100: #ffffff;
+ --color-surface-8--: #554234;
+
+ --color-text-800:#554234;
+ --color-text-100: #ffffff;
+}
+
+.dark {
+ color-scheme: dark;
+ --surface-100: var(--color-surface-800);
+ --text-800: var(--color-text-100);
+}
+
+body {
+  @apply bg-surface-100 text-text-800;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+
